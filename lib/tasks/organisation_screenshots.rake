@@ -19,7 +19,9 @@ task :organisation_screenshots => :environment do
 
     next if File.exist?(screenshot_path) unless ENV["OVERWRITE"] || ENV["ORGANISATION"]
 
-    `phantomjs lib/screenshot.js "#{org.url}" 1024 768 "#{tmp_screenshot_path}"`
+    javascript = ENV["JAVASCRIPT"] || ""
+
+    `phantomjs lib/screenshot.js "#{org.url}" 1024 768 "#{tmp_screenshot_path}" "#{javascript.shellescape}"`
     if File.exist?(tmp_screenshot_path)
       `mogrify -crop 1024x768+0+0 -thumbnail 287 "#{tmp_screenshot_path}"`
       `convert -size 287x215 xc:white "#{chrome_path}" -geometry +0+0 -composite "#{tmp_screenshot_path}" -geometry +0+18 -composite "#{screenshot_path}"`
