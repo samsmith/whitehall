@@ -41,7 +41,7 @@
 
           <li class="organisation-filter <%= (params[:organisation] && params[:organisation] != current_user.organisation_id) ? 'active' : nil %>">
             <%= form_tag("", method: :get) do %>
-              <%= select_tag :organisation, options_from_collection_for_select(Organisation.all - [current_user.organisation], 'id', 'name', params[:organisation]), class: 'chzn-select', include_blank: true, data: { placeholder: "Other organisations..." } %>
+              <%= select_tag :organisation, options_from_collection_for_select(Organisation.all - [current_user.organisation], 'id', 'name', params[:organisation]), class: 'select2', include_blank: true, data: { placeholder: "Other organisations..." } %>
               <%= hidden_field_tag :type, params[:type] if params[:type] %>
               <%= hidden_field_tag :state, params[:state] if params[:state] %>
               <%= submit_tag "Go", class: "btn" %>
@@ -50,7 +50,7 @@
           <%= link_to_filter('Everyone', {author: nil, organisation: nil}, title: "Show documents by everyone") %>
           <li class="author-filter <%= (params[:author] && params[:author] != current_user.id.to_s) ? 'active' : nil %>">
             <%= form_tag("", method: :get) do %>
-              <%= select_tag :author, options_from_collection_for_select(User.all - [current_user], 'id', 'name', params[:author]), class: 'chzn-select', include_blank: true, data: { placeholder: "Other authors..." } %>
+              <%= select_tag :author, options_from_collection_for_select(User.all - [current_user], 'id', 'name', params[:author]), class: 'select2', include_blank: true, data: { placeholder: "Other authors..." } %>
               <%= hidden_field_tag :type, params[:type] if params[:type] %>
               <%= hidden_field_tag :state, params[:state] if params[:state] %>
               <%= submit_tag "Go", class: "btn" %>

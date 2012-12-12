@@ -36,6 +36,7 @@ gem 'bootstrap-kaminari-views'
 gem 'gds-api-adapters', '4.1.3'
 gem 'whenever', '0.7.3', require: false
 gem 'mini_magick'
+gem 'select2-rails'
 
 group :assets do
   gem 'govuk_frontend_toolkit', '0.8.0'

@@ -42,11 +42,12 @@ form {
     width: 97%;
   }
 
-  select {
-    &.chzn-select {
-      width: 100%;
-    }
+  .select2{
+    width: 100%;
+    padding-bottom:5px;
+  }
 
+  select {
     &.date {
       width: auto;
     }

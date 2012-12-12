@@ -1,6 +1,7 @@
 jQuery(document).ready(function($) {
   if(typeof GOVUK === 'undefined') { window.GOVUK = {}; }
-  $(".chzn-select").chosen({allow_single_deselect: true, search_contains: true});
+  $(".select2").select2({allowClear: true});
+
 
   $("#completed_fact_check_requests").markLinkedAnchor();
 

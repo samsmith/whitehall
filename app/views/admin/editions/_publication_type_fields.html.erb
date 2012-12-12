@@ -1,6 +1,6 @@
 <fieldset>
   <%= form.label :publication_type_id, 'Publication type' %>
-  <%= form.select :publication_type_id, grouped_options_for_select(publication_type_options, edition.publication_type_id), {}, class: ['chzn-select', 'js-toggle-access-limited-checkbox'], data: { placeholder: "Choose publication type...", access_limitable_type_ids: PublicationType.access_limitable.map(&:id)} %>
+  <%= form.select :publication_type_id, grouped_options_for_select(publication_type_options, edition.publication_type_id), {}, class: ['select2', 'js-toggle-access-limited-checkbox'], data: { placeholder: "Choose publication type...", access_limitable_type_ids: PublicationType.access_limitable.map(&:id)} %>
   <% if form.object.can_limit_access? %>
     <div id="access-limited-checkbox">
       <%= hidden_field_tag "edition[access_limited]", "0", id: nil %>

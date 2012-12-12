@@ -39,7 +39,7 @@ module Admin::EditionsHelper
                 :alternative_format_provider_id,
                 select_options,
                 {include_blank: true, multiple: false},
-                class: 'chzn-select',
+                class: 'select2',
                 data: { placeholder: "Choose which organisation will provide alternative formats..." }
               ) + @template.content_tag(:p, "If the email address you need isn't here, it should be added to the relevant Department or Agency", class: 'help-block')
             end
