@@ -28,13 +28,32 @@ end
 
 FactoryGirl.define do
   factory :edition, class: GenericEdition do
+    ignore do
+      organisations { [] }
+      create_default_organisation { true }
+      supporting_organisations { [] }
+      lead_organisations { organisations }
+    end
     creator
     title "edition-title"
     body "edition-body"
     change_note "change-note"
 
     after :build do |edition, evaluator|
-      edition.organisations = FactoryGirl.build_list(:organisation, 1) unless evaluator.organisations.any?
+      if evaluator.lead_organisations.empty? && evaluator.create_default_organisation
+        edition.lead_edition_organisations.build(edition: edition,
+                                                 organisation: FactoryGirl.build(:organisation),
+                                                 lead_ordering: 1)
+      end
+      Array.wrap(evaluator.lead_organisations).each.with_index do |org, idx|
+        edition.lead_edition_organisations.build(edition: edition,
+                                                 organisation: org,
+                                                 lead_ordering: idx+1)
+      end
+      Array.wrap(evaluator.supporting_organisations).each do |org|
+        edition.supporting_edition_organisations.build(edition: edition,
+                                                       organisation: org)
+      end
     end
 
     trait(:draft) { state "draft" }
