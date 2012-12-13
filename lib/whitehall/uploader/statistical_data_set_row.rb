@@ -43,6 +43,12 @@ module Whitehall::Uploader
       Finders::OrganisationFinder.find(row['organisation'], @logger, @line_number)
     end
 
+    def lead_edition_organisations
+      organisations.map.with_index do |o, idx|
+        Builders::EditionOrganisationBuilder.build_lead(o, idx + 1)
+      end
+    end
+
     def document_series
       Finders::DocumentSeriesFinder.find(row['data_series'], @logger, @line_number)
     end
@@ -56,7 +62,7 @@ module Whitehall::Uploader
     end
 
     def attributes
-      [:title, :summary, :body, :organisations, :document_series,
+      [:title, :summary, :body, :lead_edition_organisations, :document_series,
        :attachments, :alternative_format_provider].map.with_object({}) do |name, result|
         result[name] = __send__(name)
       end

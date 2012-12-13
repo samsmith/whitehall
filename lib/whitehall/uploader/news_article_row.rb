@@ -47,6 +47,12 @@ module Whitehall::Uploader
       [organisation]
     end
 
+    def lead_edition_organisations
+      organisations.map.with_index do |o, idx|
+        Builders::EditionOrganisationBuilder.build_lead(o, idx+1)
+      end
+    end
+
     def first_published_at
       Parsers::DateParser.parse(row['first_published'], @logger, @line_number)
     end
@@ -64,7 +70,7 @@ module Whitehall::Uploader
     end
 
     def attributes
-      [:title, :summary, :body, :organisations, :first_published_at, :related_policies, :role_appointments, :countries].map.with_object({}) do |name, result|
+      [:title, :summary, :body, :lead_edition_organisations, :first_published_at, :related_policies, :role_appointments, :countries].map.with_object({}) do |name, result|
         result[name] = __send__(name)
       end
     end

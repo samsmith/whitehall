@@ -58,6 +58,12 @@ module Whitehall::Uploader
       [organisation]
     end
 
+    def lead_edition_organisations
+      organisations.map.with_index do |o, idx|
+        Builders::EditionOrganisationBuilder.build_lead(o, idx+1)
+      end
+    end
+
     def related_policies
       Finders::PoliciesFinder.find(row['policy_1'], row['policy_2'], row['policy_3'], row['policy_4'], @logger, @line_number)
     end
@@ -81,7 +87,7 @@ module Whitehall::Uploader
         body: body,
         opening_on: opening_on,
         closing_on: closing_on,
-        organisations: organisations,
+        lead_edition_organisations: lead_edition_organisations,
         related_policies: related_policies,
         attachments: attachments,
         alternative_format_provider: alternative_format_provider,
