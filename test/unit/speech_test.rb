@@ -36,12 +36,6 @@ class SpeechTest < EditionTestCase
     refute speech.valid?
   end
 
-  test "associates itself with role appointments organisation on save" do
-    speech = build(:speech)
-    speech.save!
-    assert_equal speech.role_appointment.role.organisations, speech.reload.organisations
-  end
-
   test "has statement to parliament display type if written statement" do
     speech = build(:speech, speech_type: SpeechType::WrittenStatement)
     assert_equal "Statement to parliament", speech.display_type
@@ -59,21 +53,23 @@ class SpeechTest < EditionTestCase
     end
   end
 
-  test "create should populate organisations based on the role_appointment that delivered the speech" do
+  test "create should populate organisations based on the role_appointment that delivered the speech, and mark them as lead" do
     organisation = create(:organisation)
     ministerial_role = create(:ministerial_role, organisations: [organisation])
     role_appointment = create(:role_appointment, role: ministerial_role)
     speech = create(:speech, role_appointment: role_appointment)
 
     assert_equal [organisation], speech.organisations
+    assert_equal [organisation], speech.lead_organisations
   end
 
-  test "save should populate organisations based on the role_appointment that delivered the speech" do
+  test "save should populate lead organisations based on the role_appointment that delivered the speech, and mark them as lead" do
     organisation = create(:organisation)
     ministerial_role = create(:ministerial_role, organisations: [organisation])
     role_appointment = create(:role_appointment, role: ministerial_role)
     speech = create(:speech, role_appointment: role_appointment)
 
+    assert_equal [organisation], speech.lead_organisations
     assert_equal [organisation], speech.organisations
   end
 
