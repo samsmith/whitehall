@@ -139,7 +139,7 @@ private
   end
 
   def filter_by_announcement_filter_option!
-    if selected_announcement_type_option
+    if selected_announcement_type_option && selected_announcement_type_option != "all"
       type = selected_announcement_type_option
       editions = @documents.arel_table
       case type
