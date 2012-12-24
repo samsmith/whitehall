@@ -35,7 +35,7 @@
     </table>
 
     <div class="read-more">
-      <%= link_to "View all announcements", :announcements %>
+      <%= link_to("View all announcements", announcements_path(role_appointment_id: person.role_appointments.map(&:id))) %>
     </div>
   </section>
 <% end %>

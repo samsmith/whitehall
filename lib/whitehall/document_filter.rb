@@ -18,6 +18,7 @@ class Whitehall::DocumentFilter
     filter_by_date!
     filter_by_publication_filter_option!
     filter_by_announcement_filter_option!
+    filter_by_role_appointment_option!
     paginate!
     apply_sort_direction!
   end
@@ -66,6 +67,11 @@ class Whitehall::DocumentFilter
 
   def selected_announcement_type_option
     filter_option = @params[:announcement_type_option] || @params[:announcement_type]
+    filter_option
+  end
+
+  def selected_role_appointment_option
+    filter_option = @params[:role_appointment_id] || @params[:role_appointment]
     filter_option
   end
 
@@ -131,7 +137,8 @@ private
       if selected_publication_filter_option.edition_types.any?
         edition_types = selected_publication_filter_option.edition_types
         editions = @documents.arel_table
-        @documents = @documents.where(editions[:publication_type_id].in(publication_ids).or(editions[:type].in(edition_types)))
+        @documents = @documents.where(editions[:publication_type_id].in(publication_ids)
+                      .or(editions[:type].in(edition_types)))
       else
         @documents = @documents.where(publication_type_id: publication_ids)
       end
@@ -145,13 +152,21 @@ private
       case type
       when "Speech"
         speech_ids = [SpeechType::Transcript, SpeechType::DraftText, SpeechType::SpeakingNotes].map(&:id)
-        @documents = @documents.where(editions[:type].in(type)).where(editions[:speech_type_id].in(speech_ids))
+        @documents = @documents.where(editions[:speech_type_id].in(speech_ids))
       when "Statement"
         statement_ids = [SpeechType::WrittenStatement, SpeechType::OralStatement].map(&:id)
-        @documents = @documents.where(editions[:type].in("Speech")).where(editions[:speech_type_id].in(statement_ids))
+        @documents = @documents.where(editions[:speech_type_id].in(statement_ids))
       else
         @documents = @documents.where(editions[:type].in(type))
       end
+    end
+  end
+
+  def filter_by_role_appointment_option!
+    role_appointment = selected_role_appointment_option
+    editions = @documents.arel_table
+    if role_appointment
+      @documents = @documents.where(editions[:role_appointment_id].in(role_appointment)) 
     end
   end
 
