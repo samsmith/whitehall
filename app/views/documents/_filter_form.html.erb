@@ -34,8 +34,8 @@
         <div class="filter">
           <div class="filter-inner">
             <div>
-              <%= label_tag "role_appointment_id", "By minister", class: "title" %>
-              <%= select_tag :role_appointment_id, options_from_collection_for_select([""]+role_appointment_options, :first, :last, @filter.selected_role_appointment_option), class: 'single-row-select'  %>
+              <%= label_tag "person_id", "By minister", class: "title" %>
+              <%= select_tag :person_id, options_from_collection_for_select(Person.all, 'id', 'name', @filter.selected_person_option), include_blank: true , class: 'single-row-select'  %>
             </div>
         </div>
       </div>

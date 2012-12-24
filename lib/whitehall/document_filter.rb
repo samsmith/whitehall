@@ -18,7 +18,7 @@ class Whitehall::DocumentFilter
     filter_by_date!
     filter_by_publication_filter_option!
     filter_by_announcement_filter_option!
-    filter_by_role_appointment_option!
+    filter_by_person_option!
     paginate!
     apply_sort_direction!
   end
@@ -70,9 +70,9 @@ class Whitehall::DocumentFilter
     filter_option
   end
 
-  def selected_role_appointment_option
-    filter_option = @params[:role_appointment_id] || @params[:role_appointment]
-    filter_option
+  def selected_person_option
+    filter_option = @params[:person_id] || @params[:person]
+    Person.where(id: filter_option).first
   end
 
   def keywords
@@ -162,11 +162,11 @@ private
     end
   end
 
-  def filter_by_role_appointment_option!
-    role_appointment = selected_role_appointment_option
-    editions = @documents.arel_table
-    if role_appointment
-      @documents = @documents.where(editions[:role_appointment_id].in(role_appointment)) 
+  def filter_by_person_option!
+    if selected_person_option
+      role_appointments = selected_person_option.role_appointments.map(&:id)
+      editions = @documents.arel_table
+      @documents = @documents.where(editions[:role_appointment_id].in(role_appointments)) 
     end
   end
 
